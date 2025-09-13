@@ -3,7 +3,9 @@ name = "wallet_service"
 version = "0.1.0"
 edition = "2021"
 
+
 [dependencies]
+
 axum = "0.6.20"
 tokio = { version = "1", features = ["full"] }
 sqlx = { version = "0.6", features = ["runtime-tokio-native-tls", "postgres", "chrono", "migrate"] }
@@ -17,8 +19,6 @@ log = "0.4"
 env_logger = "0.10"
 futures-util = "0.3.31"
 
-[dependencies.base64ct]
-version = "1.7.0"
 
 [dev-dependencies]
 reqwest = { version = "0.11", features = ["json"] }

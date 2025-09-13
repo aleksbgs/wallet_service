@@ -1,7 +1,6 @@
-version: '3.8'
 services:
   postgres:
-    image: postgres:15
+    image: postgres:17
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
@@ -12,21 +11,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3.13-management
     ports:
       - "5672:5672"
       - "15672:15672"
-
-  app:
-    build: .
-    environment:
-      DATABASE_URL: postgres://user:pass@postgres:5432/wallet
-      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672//
-    depends_on:
-      - postgres
-      - rabbitmq
-    ports:
-      - "3000:3000"
 
 volumes:
   postgres_data:
