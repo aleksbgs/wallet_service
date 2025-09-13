@@ -16,10 +16,17 @@ Get the service running and test it with a few commands.
 ### Steps
 ```bash
 # 1. Build and start services (PostgreSQL, RabbitMQ, and the Rust app)
+
 docker-compose up --build
 
+```
+
 # 2. Run database migrations
+```bash
+
 sqlx migrate run
+
+```
 
 # 3. Queue a transfer
 curl -X POST http://localhost:3000/transfer \
@@ -31,7 +38,7 @@ curl http://localhost:3000/balance/0x1234567890abcdef1234567890abcdef12345678
 
 # 5. View transfer history
 curl http://localhost:3000/transfers/0x1234567890abcdef1234567890abcdef12345678
-```
+
 
 The API is available at `http://localhost:3000`.
 
