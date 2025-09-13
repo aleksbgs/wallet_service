@@ -29,15 +29,29 @@ sqlx migrate run
 ```
 
 # 3. Queue a transfer
+```bash
+
 curl -X POST http://localhost:3000/transfer \
   -H "Content-Type: application/json" \
   -d '{"from": "0x1234567890abcdef1234567890abcdef12345678", "to": "0xabcdef1234567890abcdef1234567890abcdef12", "amount": 100}'
 
-# 4. Check balance
+```
+
+# 4. Check 
+```bash
+
 curl http://localhost:3000/balance/0x1234567890abcdef1234567890abcdef12345678
 
+
+```
+
 # 5. View transfer history
+```bash
+
 curl http://localhost:3000/transfers/0x1234567890abcdef1234567890abcdef12345678
+
+
+```
 
 
 The API is available at `http://localhost:3000`.
