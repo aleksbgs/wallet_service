@@ -1,6 +1,5 @@
 use axum::{Router, Server, routing, Json};
 use axum::extract::{Path, State};
-use axum::response::IntoResponse;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use axum::http::StatusCode;
@@ -10,7 +9,7 @@ use futures_util::stream::StreamExt; // Import the correct StreamExt trait
 
 use crate::application::{GetBalance, GetTransferHistory, TransferFunds};
 use crate::infrastructure::{database::init_pool, message_queue::init_rabbitmq};
-use crate::interfaces::http::handlers::{get_balance, get_transfers, transfer, AppState};
+use crate::interfaces::http::handlers::{transfer, AppState};
 use crate::interfaces::messaging::rabbitmq::RabbitMQ;
 use crate::interfaces::repository::postgres::PostgresWalletRepository;
 
@@ -94,7 +93,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/transfer", routing::post(transfer))
         .route("/balance/:address", routing::get({
             let get_balance_use_case = app_state.get_balance.clone(); // Capture use case
-            move |state: State<Arc<AppState>>, Path(address): Path<String>| async move {
+            move |_state: State<Arc<AppState>>, Path(address): Path<String>| async move {
                 match get_balance_use_case.execute(&address).await {
                     Ok(balance) => Ok((StatusCode::OK, balance.to_string())),
                     Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
@@ -103,7 +102,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }))
         .route("/transfers/:address", routing::get({
             let get_transfer_history = app_state.get_transfer_history.clone(); // Capture use case
-            move |state: State<Arc<AppState>>, Path(address): Path<String>| async move {
+            move |_state: State<Arc<AppState>>, Path(address): Path<String>| async move {
                 match get_transfer_history.execute(&address).await {
                     Ok(transfers) => Ok((StatusCode::OK, Json(transfers))),
                     Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
